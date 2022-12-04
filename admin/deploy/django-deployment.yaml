@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: shoppingbasket-api
-          image: zankor/basket-data:latest
+          image: zankor/shoppingBasket-data:latest
           imagePullPolicy: "Always"
           ports:
             - containerPort: 8000
