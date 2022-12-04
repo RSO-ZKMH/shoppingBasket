@@ -1,0 +1,8 @@
+django>=3.2,<4.0
+djangorestframework==3.14.0
+pika==1.1.0
+django-cors-headers==3.5.0
+psycopg2-binary>=2.8.6
+drf_yasg
+gunicorn
+requests

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: rso-deploy
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shoppingbasket-deployment
+  namespace: rso-deploy
+  labels:
+    app: shoppingbasket-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shoppingbasket-api
+  template:
+    metadata:
+      labels:
+        app: shoppingbasket-api
+        component: backend
+    spec:
+      containers:
+        - name: shoppingbasket-api
+          image: zankor/shoppingBasket-data:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shoppingbasket-service
+  namespace: rso-deploy
+  labels:
+    app: shoppingbasket-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      protocol: TCP
+      targetPort: 8000
+  selector:
+    app: shoppingbasket-api
+    component: backend
+---
+
