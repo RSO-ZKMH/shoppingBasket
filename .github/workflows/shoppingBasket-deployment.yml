@@ -21,10 +21,10 @@ jobs:
           docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_PASSWORD}}
       - name: Build Docker image
         working-directory: ./admin
-        run: docker build -f Dockerfile -t ${{secrets.DOCKER_USER}}/shoppingBasket-data:latest .
+        run: docker build -f Dockerfile -t ${{secrets.DOCKER_USER}}/shopping-basket-data:latest .
 
       - name: Push Docker image
-        run: docker push ${{secrets.DOCKER_USER}}/shoppingBasket-data
+        run: docker push ${{secrets.DOCKER_USER}}/shopping-basket-data
 
       - name: Azure Login
         uses: Azure/login@v1.4.6
@@ -40,7 +40,7 @@ jobs:
       
       - name: Update Deployment image
         run: |
-          kubectl set image deployment/shoppingbasket-deployment shoppingbasket-api=${{secrets.DOCKER_USER}}/shoppingBasket-data:latest -n rso-deploy
+          kubectl set image deployment/shoppingbasket-deployment shoppingbasket-api=${{secrets.DOCKER_USER}}/shopping-basket-data:latest -n rso-deploy
       - name: Wait for rollout to finish
         run: |
           kubectl rollout status deployment/shoppingbasket-deployment -n rso-deploy
