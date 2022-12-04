@@ -18,12 +18,12 @@ class ShoppingBasketViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None): # GET /api/shoppingBasket/:id
         queryset = ShoppingBasket.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-        serializer = ShoppingBasket(user)
+        serializer = ShoppingBasketSerializer(user)
         return Response(serializer.data)
 
     @swagger_auto_schema(operation_description="Create a shopping basket", responses={404: 'slug not found'})
     def create(self, request): # POST /api/shoppingBasket
-        serializer = ShoppingBasket(data=request.data)
+        serializer = ShoppingBasketSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

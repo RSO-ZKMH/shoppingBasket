@@ -6,7 +6,7 @@ services:
     build:
       context: ./admin
       dockerfile: Dockerfile
-    image: django-k8s:v1
+    image: shopping-basket:v1
     ports:
-      - "8000:8000"
+      - "8080:8080"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
