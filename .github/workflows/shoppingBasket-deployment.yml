@@ -43,4 +43,4 @@ jobs:
           kubectl set image deployment/shoppingbasket-deployment shoppingbasket-api=${{secrets.DOCKER_USER}}/basket-data:latest -n rso-deploy
       - name: Wait for rollout to finish
         run: |
-          kubectl rollout status deployment/shoppingbasket-deployment -n rso-deploy
+          kubectl rollout status deployment/basket-deployment -n rso-deploy
