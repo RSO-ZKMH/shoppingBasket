@@ -40,7 +40,7 @@ jobs:
       
       - name: Update Deployment image
         run: |
-          kubectl set image deployment/shoppingbasket-deployment shoppingbasket-api=${{secrets.DOCKER_USER}}/basket-data:latest -n rso-deploy
+          kubectl set image deployment/shoppingBasket-deployment shoppingBasket-api=${{secrets.DOCKER_USER}}/shoppingBasket-data:latest -n rso-deploy
       - name: Wait for rollout to finish
         run: |
-          kubectl rollout status deployment/shoppingbasket-deployment -n rso-deploy
+          kubectl rollout status deployment/shoppingBasket-deployment -n rso-deploy
