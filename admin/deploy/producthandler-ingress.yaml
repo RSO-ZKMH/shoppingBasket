@@ -1,26 +1,37 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-shoppingbasket-api
+  name: product-handler-ingress
   namespace: rso-deploy
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: shopping-basket.com
-    kubernetes.io/ingress.class: nginx    
+    #kubernetes.io/ingress.global-static-ip-name: shopping-basket.com
+    #kubernetes.io/ingress.class: nginx  
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2  
 
 spec:
+  ingressClassName: nginx
   rules:
-  - host: shopping-basket.com
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: shoppingbasket-service
-              port:
-                number: 8000
+  #- host: shopping-basket.com
+    - http:
+        paths:
+          - path: /shoppingBasket(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: shoppingbasket-service
+                port:
+                  number: 8080
+          - path: /products(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: producthandler-service
+                port:
+                  number: 8000
 
-status:
-  loadBalancer:
-    ingress:
-      - ip: 20.85.162.42
+#status:
+#  loadBalancer:
+#    ingress:
+#      - ip: 20.85.162.42
