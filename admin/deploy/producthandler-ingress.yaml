@@ -22,16 +22,16 @@ spec:
               service:
                 name: shoppingbasket-service
                 port:
-                  #number: 8080
-                  number: 80
+                  number: 8080
+                  #number: 80
           - path: /products(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: producthandler-service
                 port:
-                  #number: 8000
-                  number: 80
+                  number: 8000
+                  #number: 80
 
 #status:
 #  loadBalancer:
