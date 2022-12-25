@@ -27,7 +27,8 @@ spec:
           image: zankor/shopping-basket-data:latest
           imagePullPolicy: "Always"
           ports:
-            - containerPort: 8080
+            #- containerPort: 8080
+            - containerPort: 80
 
 
 ---
@@ -42,9 +43,10 @@ spec:
   #type: LoadBalancer
   type: ClusterIP
   ports:
-    - port: 8080
-      protocol: TCP
-      targetPort: 8080
+    #- port: 8080
+    #  protocol: TCP
+    #  targetPort: 8080
+    - port: 80
   selector:
     app: shoppingbasket-api
     component: backend
