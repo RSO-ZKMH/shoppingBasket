@@ -1,10 +1,13 @@
-from django.shortcuts import get_object_or_404, render
-from shoppingBasket.models import User
+from django.shortcuts import get_object_or_404
 from shoppingBasket.models import ShoppingBasket
 from .serializers import ShoppingBasketSerializer
 from rest_framework.response import Response
+from django.http import JsonResponse
 from rest_framework import viewsets, status
 from drf_yasg.utils import swagger_auto_schema
+from constance import config
+from constance.signals import config_updated
+from django.dispatch import receiver
 
 # Create your views here.
 

@@ -4,16 +4,34 @@ metadata:
   name: product-handler-ingress
   namespace: rso-deploy
   annotations:
-    #kubernetes.io/ingress.global-static-ip-name: shopping-basket.com
-    #kubernetes.io/ingress.class: nginx  
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2  
+    nginx.ingress.kubernetes.io/app-root: /app
+    #nginx.ingress.kubernetes.io/rewrite-target: /$2
+
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      # Rewrite /app to /$2
+      if ($request_uri ~* "^/app(/|$)(.*)") {
+        add_header "X-Path" $request_uri;
+        break;
+      }      
+      # Rewrite to /$2 if the path does not contain 'static'
+      if ($request_uri !~* "/products/static") {
+        add_header "X-Path" $request_uri;
+        rewrite ^/products(/|$)(.*) /$2 break;
+      }
+      if ($request_uri !~* "/shoppingBasket/static") {
+        add_header "X-Path" TESTPRODUCTS;
+        rewrite ^/shoppingBasket(/|$)(.*) /$2 break;
+      }
+      if ($request_uri !~* "/user/static") {
+        add_header "X-Path" TESTPRODUCTS;
+        rewrite ^/user(/|$)(.*) /$2 break;
+      }
 
 spec:
   ingressClassName: nginx
   rules:
-  #- host: shopping-basket.com
     - http:
         paths:
           - path: /shoppingBasket(/|$)(.*)
@@ -23,7 +41,6 @@ spec:
                 name: shoppingbasket-service
                 port:
                   number: 8080
-                  #number: 80
           - path: /products(/|$)(.*)
             pathType: Prefix
             backend:
@@ -31,9 +48,17 @@ spec:
                 name: producthandler-service
                 port:
                   number: 8000
-                  #number: 80
-
-#status:
-#  loadBalancer:
-#    ingress:
-#      - ip: 20.85.162.42
+          - path: /user(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 8160
+          - path: /app
+            pathType: Prefix
+            backend:
+              service:
+                name: productapp-service
+                port:
+                  number: 9000

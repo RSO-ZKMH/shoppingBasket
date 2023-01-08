@@ -1,10 +1,7 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class ShoppingBasket(models.Model):
-    title = models.CharField(max_length=255)
-    price = models.FloatField()
-    store = models.CharField(max_length=255)
-
-
-class User(models.Model):
-    pass
+    id = models.UUIDField()
+    userId = models.UUIDField()
+    productIds = models.ArrayField(models.UUIDField())

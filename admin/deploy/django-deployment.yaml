@@ -28,9 +28,11 @@ spec:
           imagePullPolicy: "Always"
           ports:
             - containerPort: 8080
-              name: server
-              protocol: TCP
-              #- containerPort: 80
+          env:
+          - name: "BASE_PATH"
+            value: "/shoppingBasket"
+          - name: "REDIS_HOST"
+            value: "redis"
 
 
 ---
@@ -42,15 +44,11 @@ metadata:
   labels:
     app: shoppingbasket-api
 spec:
-  #type: LoadBalancer
   type: ClusterIP
   ports:
-    #- port: 8080
-    #  protocol: TCP
-    #  targetPort: 8080
     - port: 8080
       protocol: TCP
-      targetPort: server
+      targetPort: 8080
   selector:
     app: shoppingbasket-api
     component: backend
