@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'constance',
     'rest_framework',
     'corsheaders',
-    'user',
+    'shoppingBasket',
     'drf_yasg'
 ]
 
