@@ -26,16 +26,7 @@ schema_view = swagger_get_schema_view(
 )
 
 urlpatterns = [
-    path('shoppingBasket', ShoppingBasketViewSet.as_view({
-        'get': 'list',
-        'post': 'create',
-    })),
-    path('shoppingBasket/<str:pk>', ShoppingBasketViewSet.as_view({
-        'get': 'retrieve',
-        'put': 'update',
-        'delete': 'destroy',
-        'patch': 'partial_update',
-    })),
+
     path('shoppingBasket/addProduct', ShoppingBasketViewSet.as_view({
         'post': 'addProduct',
     })),
