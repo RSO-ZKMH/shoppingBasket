@@ -5,4 +5,4 @@ from .models import ShoppingBasket
 class ShoppingBasketSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingBasket
-        fields = '__all__'
+        fields = ('userId', 'productId')

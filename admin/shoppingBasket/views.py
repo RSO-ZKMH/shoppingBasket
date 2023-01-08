@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 from shoppingBasket.models import ShoppingBasket
 from .serializers import ShoppingBasketSerializer
 from rest_framework.response import Response
@@ -52,5 +53,32 @@ class ShoppingBasketViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    def addProduct(self, request):
+        serializer = ShoppingBasketSerializer(data=request.data)
+        if not serializer.is_valid():
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        userId = serializer.data.get('userId')
+        productId = serializer.data.get('productId')
+
+        shoppingBasket = get_object_or_404(ShoppingBasket, userId=userId)
+        if(shoppingBasket == Http404):
+            # create basket
+            basket = ShoppingBasket(userId=userId, productId=[productId])
+            basket.save()
+            return JsonResponse(basket, status=status.HTTP_200_OK)
+        else:
+            # update basket
+            if(productId not in shoppingBasket.productIds):
+                shoppingBasket.productIds.append(productId)
+                shoppingBasket.save()
+                return JsonResponse(shoppingBasket, status=status.HTTP_200_OK)
+            else:
+                return JsonResponse({'error': 'Product already in shopping basket'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        
+
 
         
